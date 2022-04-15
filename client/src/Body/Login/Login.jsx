@@ -12,22 +12,49 @@ import Container from '@mui/material/Container';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./login.css"
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+
+Axios.defaults.withCredentials = true;
+
 
 
 
 const theme = createTheme();
 
 export default function SignIn() {
+  const navigate = useNavigate();
 
  document.title = "Login";
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+      const data = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+    alert(data.email);
+     Axios
+      .post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/login`, {
+        email: data.email,
+        password: data.password,
+      })
+      .then((res) => {
+        // console.log(res.data);
+        if (res.data.success === true) {
+          // props.setLoggedIn(true);
+          navigate("/");
+        } else if (res.data.success === false && res.data.err == false) {
+          alert(res.data.message);
+          //   createNotification(res.data.err, "error", 3000);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   };
 
   return (

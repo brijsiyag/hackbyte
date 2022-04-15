@@ -15,22 +15,62 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import "../Login/login.css"
 import FormControl from '@mui/material/FormControl';
+import Axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
-
+Axios.defaults.withCredentials = true;
 
 const theme = createTheme();
 
 export default function SignUp() {
+    const navigate = useNavigate();
   document.title = "Signup";
+
+    const [batch, setbatch] = React.useState("2020");
+
+  const batchChangeHandler = (event) => {
+    setbatch(event.target.value);
+  };
+
+      const [branch, setbranch] = React.useState("Cse");
+
+  const branchChangeHandler = (event) => {
+    setbranch(event.target.value);
+  };
+
+  
+ 
+
   
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      batch: formData.get("batch"),
+      branch: formData.get("branch"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+
+     Axios.post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/register`, {
+      ...data,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.data.success === true) {
+          // sessionStorage.setItem("LoggedIn", true);
+          navigate("/signin");
+        } else if (res.data.success === false && res.data.err === false) {
+          alert(res.data.message);
+        }
+      })
+      .catch((err) => {
+        alert("Sorry some error was caused");
+        navigate("/signup");
+      });
+ 
   };
 
   return (
@@ -55,27 +95,18 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} >
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
+          
                <Grid item xs={12} sm={6}>
                    <FormControl fullWidth>
              <InputLabel id="batch-label">Batch</InputLabel>
