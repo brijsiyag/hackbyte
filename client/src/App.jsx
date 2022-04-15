@@ -25,7 +25,7 @@ function App() {
             path="/assignments/:assignment/:question_id"
             element={<h1>Submit Code</h1>}
           />
-          <Route path="/login" element={<h1>Login</h1>} />
+          <Route path="/login" element={<Login/>} />
           <Route path="/signup" element={<h1>Signup</h1>} />
           <Route exact path="*" element={<h1>Main</h1>} />
         </Routes>

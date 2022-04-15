@@ -1,9 +1,9 @@
 .loginContainer{
-padding: 80px 40px;
+padding: 60px 40px;
 width: fit-content;
 display: block;
  margin: auto;   
- margin-top: 20px;
+ margin-top: 50px;
 border-radius: 25px;
 background: #ffffff;
 box-shadow: 5px 5px 13px #ededed,
@@ -13,6 +13,6 @@ box-shadow: 5px 5px 13px #ededed,
     margin-top: 0px !important;
 }
 .css-164r41r{
-    margin-top: 50px !important;
+    margin-top: 30px !important;
 }
 
