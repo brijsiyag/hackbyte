@@ -11,7 +11,7 @@ const Main =() =>{
   <Grid item xs={6}>
     <div className="main-heading">
   <h1 className="main-heading-text">
- HackByte LMS solutions for school and beyond.
+ <span className="spanit">HackByte</span> LMS solutions  <span className="spanit">for</span>  school and  <span className="spanit">beyond.</span> 
   </h1>
   </div>
   </Grid>

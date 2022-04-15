@@ -4,17 +4,22 @@
     margin-top: 50px;
 }
 .main-heading{
-    width:90%;
+    width:85%;
     display: block;
-  margin-left: 10%;
-  margin-top: 11%;
+  margin-left: 13%;
+  margin-top: 17%;
 }
 .main-heading-text{
-    font-size: 3.3rem;
+    font-size: 3.2rem;
     font-family: 'Roboto Mono',
     monospace;
-    color: rgb(109, 109, 109);
+    color: rgb(129, 129, 129);
 }
 .main-image{
     margin-left: 70px;
+    height: 500px;
+    margin-top: 30px;
+}
+.spanit{
+     color: #1976d2;
 }
