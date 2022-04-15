@@ -3,6 +3,8 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import "./admin.css"
 import Nav from "./Nav"
+import Link from '@mui/material/Link';
+
 
 
 
@@ -20,8 +22,9 @@ const Admin =() =>{
  <span className="spanit">Hello</span> Admin
   </h1>
   </div>
+  <Link href="/questionadd" className="head-main">
  <Button variant="contained" size="large" className="admin-button">Add Question</Button>
- 
+ </Link>
 
   </Grid>
   <Grid item xs={6}>
