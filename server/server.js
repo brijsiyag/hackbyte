@@ -1,42 +1,51 @@
-const winston = require("winston");
-const passport = require("passport");
 const mongoose = require("mongoose");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const bodyParser = require("body-parser");
 const express = require("express");
-
-const port = process.env.PORT || 3900;
+const cors = require("cors");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+const auth = require("./Routes/auth");
+const compile = require("./Routes/compile");
 const app = express();
 
-require("./startup/passport/passport-setup")();
-require("./startup/logging")();
-require("./startup/validation")();
-require("./startup/cors")(app);
-require("./startup/db")();
-require("./startup/prod")(app);
-
-// Create session
+//Middlewares
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(
-  session({
-    // Used to compute a hash
-    secret: process.env.SESSION_KEY,
-    resave: false,
-    saveUninitialized: false,
-    // Store session on DB
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI || "mongodb://localhost:27017/test",
-    }),
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
   })
 );
-
-// Parse incoming request bodies in a middleware before your handlers, available under the req.body property.
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(cookieParser("secret"));
 app.use(passport.initialize());
 app.use(passport.session());
-
-require("./routes/index")(app);
-
-app.listen(port, () => winston.info(`Listening on port ${port}...`));
+require("./passportConfig")(passport);
+//-----------------------------------------End Of MiddleWares------------------------------------//
+//Database connect
+mongoose.connect(
+  "mongodb+srv://ayush:1234@cluster0.4cupz.mongodb.net/hackbyte?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  (err) => {
+    if (err) {
+      console.log("Failed to connect database " + err);
+    } else {
+      console.log("Database connected successfully......");
+    }
+  }
+);
+//-----------------------------------------End Of Database------------------------------------//
+//Routes
+app.use(auth);
+app.use(compile);
+//-----------------------------------------End Of Routes------------------------------------//
+app.listen("8000", () => {
+  console.log("server is running on port 8000.....");
+});

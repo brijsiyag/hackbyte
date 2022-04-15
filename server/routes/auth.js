@@ -1,176 +1,56 @@
-const {
-  User,
-  validateLoginInput,
-  validateRegisterInput,
-} = require("../models/user");
-const { Token } = require("../models/token");
-const sanitize = require("mongo-sanitize");
-const moment = require("moment");
-const passport = require("passport");
 const express = require("express");
-const crypto = require("crypto");
-const sgMail = require("@sendgrid/mail");
-const winston = require("winston");
-
 const router = express.Router();
+const bcrypt = require("bcryptjs");
+const User = require("../user");
+router.get("/user", (req, res) => {
+  if (req.isAuthenticated()) {
+    console.log(req.user);
+    res.send(req.user.username);
+  } else {
+    res.send("Please Login First......");
+  }
+});
 
-moment().format();
-
-const host = process.env.HOST; // FRONTEND Host
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-// Define email address that will send the emails to your users.
-//  Input : username/password via body
-//  HTTP Success : 200, message and user infos.
-//  HTTP Errors : 400, 401.
-router.post("/login", (req, res, next) => {
-  const { error } = validateLoginInput(req.body);
-  if (error) return res.status(400).send({ message: error.details[0].message });
-
-  req.body = sanitize(req.body);
-
-  req.body.username = req.body.username.toLowerCase();
-
-  passport.authenticate("local", (err, user, info) => {
+router.post("/register", (req, res) => {
+  User.findOne({ username: req.body.username }, async (err, data) => {
     if (err) {
-      return next(err);
+      throw err;
     }
-    if (info && info.message === "Missing credentials") {
-      return res.status(400).send({ message: "Missing credentials" });
-    }
-    if (!user) {
-      return res.status(400).send({ message: "Invalid email or password." });
-    }
-    if (!user.isVerified)
-      return res.status(401).send({
-        message:
-          "Your account has not been verified. Please activate your account.",
+    if (data) {
+      return res.send("User already exists...");
+    } else {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const user = new User({
+        username: req.body.username,
+        password: hashedPassword,
       });
+      await user.save();
+      res.send("User Created Successfully....");
+    }
+  });
+});
 
-    req.login(user, (err) => {
-      if (err) {
-        res.status(401).send({ message: "Authentication failed", err });
-      }
-      res
-        .status(200)
-        .send({ message: "Login success", user: user.hidePassword() });
-    });
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) throw err;
+    if (!user) res.send("No User Exists...");
+    else {
+      req.logIn(user, (err) => {
+        if (err) throw err;
+        res.send("User Authenticated Successfully....");
+        console.log(req.user);
+      });
+    }
   })(req, res, next);
 });
 
-//  Input : void, identified by session cookie.
-//  HTTP Success : 200 and message.
-//  HTTP Errors : 400, 500, 503.
-router.post("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      res.status(500).send({ message: "Logout failed", err });
-    }
-    req.sessionID = null;
-    req.logout();
-    res.status(200).send({ message: "Logout success" });
-  });
+router.get("/logout", (req, res) => {
+  try {
+    req.logOut();
+    res.send("Logged Out Successfully.....");
+  } catch (err) {
+    console.log(err);
+    res.send("Something went wrong.....");
+  }
 });
-
-//  Input : username, email, password via body;
-//  HTTP Success : 200 and message.
-//  HTTP Errors : 400,500.
-router.post("/register", async (req, res) => {
-  // Validate Register input
-  const { error } = validateRegisterInput(req.body);
-  if (error) return res.status(400).send({ message: error.details[0].message });
-
-  req.body = sanitize(req.body);
-
-  //Check for existing username
-  let user = await User.findOne(
-    { username: req.body.username.toLowerCase() },
-    function (err) {
-      if (err) {
-        return res.status(500).send("An unexpected error occurred");
-      }
-    }
-  );
-  if (user)
-    return res
-      .status(400)
-      .send({ message: "Username already taken. Take an another Username" });
-
-  //Check for existing email
-  user = await User.findOne(
-    { email: req.body.email.toLowerCase() },
-    function (err) {
-      if (err) {
-        return res.status(500).send("An unexpected error occurred");
-      }
-    }
-  );
-  if (user)
-    return res
-      .status(400)
-      .send({ message: "Email already registered. Take an another email" });
-
-  // Create new user
-  user = new User(req.body);
-
-  // Hash password
-  user.hashPassword().then(() => {
-    // save user
-    user.save((err) => {
-      if (err) {
-        return res
-          .status(500)
-          .send({ message: "Creation of user failed, try again." });
-      } else {
-        // create a token
-        const token = new Token({
-          _userId: user._id,
-          token: crypto.randomBytes(16).toString("hex"),
-        });
-
-        // and store it for validation 12h expires
-        token.save(function (err) {
-          if (err) {
-            return res.status(500).send("An unexpected error occurred");
-          }
-          // send verification email
-          const message = {
-            to: user.email,
-            from: `${sendingEmail}`,
-            subject: "Email Verification",
-            text: "Some uselss text",
-            html: `<p>Please verify your account by clicking the link: 
-            <a href="http://${host}/account/confirm/${token.token}">http://${host}/account/confirm/${token.token}</a> </p>`,
-          };
-          sgMail
-            .send(message)
-            .then(() => {
-              return res
-                .status(200)
-                .send({ message: "A verification mail has been sent." });
-            })
-            .catch((error) => {
-              winston.error(error);
-              User.findOneAndDelete(
-                { email: user.email, isVerified: false },
-                function (err) {
-                  if (err) {
-                    return res
-                      .status(500)
-                      .send(
-                        "Impossible to delete the created user. Contact support or wait 12 hours to retry."
-                      );
-                  }
-                }
-              );
-              return res.status(503).send({
-                message: `Impossible to send an email to ${user.email}, try again. Our service may be down.`,
-              });
-            });
-        });
-      }
-    });
-  });
-});
-
 module.exports = router;
