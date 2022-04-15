@@ -3,6 +3,7 @@ import Navbar from "./Header/Navbar";
 import Login from "./Body/Login/Login";
 import Signup from "./Body/Signup/Signup";
 import Ide from "./Body/Ide/Ide";
+import Main from "./Body/Main/main";
 
 import "./App.css";
 function App() {
@@ -14,6 +15,8 @@ function App() {
       <Navbar />
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Main />} />
+
           <Route exact path="/assignments" element={<h1>Courses List</h1>} />
           <Route
             exact
