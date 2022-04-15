@@ -22,6 +22,8 @@ import FormControl from '@mui/material/FormControl';
 const theme = createTheme();
 
 export default function SignUp() {
+  document.title = "Signup";
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

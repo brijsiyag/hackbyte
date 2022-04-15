@@ -6,6 +6,9 @@ import Ide from "./Body/Ide/Ide";
 
 import "./App.css";
 function App() {
+   document.title = "Hackbyte";
+
+   
   return (
     <div className="App">
       <Navbar />
