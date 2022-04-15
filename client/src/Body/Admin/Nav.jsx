@@ -15,11 +15,10 @@ import Link from '@mui/material/Link';
 import "./navbar.css"
 
 
-const pages = ["Assignments", "Ide"];
-const settings = ["Profile","Dashboard"];
-const logins = ["Login","Signup"];
+const logins = ["Logout"];
+const pages = [];
 
-const loggedin=false;
+
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -44,14 +43,14 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-            <Link href="/" className="head-main" style={{ color: "white", padding: 0,  }}>
+            <Link href="/admin" className="head-main" style={{ color: "white", padding: 0,  }}>
           <Typography
             variant="h4"
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
           >
-            Hackbyte
+           Admin
           </Typography>
               </Link>
 
@@ -92,20 +91,14 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {loggedin==true ? (settings.map((setting) => (
+              {
+              logins.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                   <Link href={`/${setting}`} className="head-main" style={{ color: "black", padding: 0, textDecoration:"none" }}>
+                      
                   <Typography textAlign="center">{setting}</Typography>
-                  </Link>
+                 
                 </MenuItem>
-              ))):
-              (logins.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Link href={`/${setting}`} className="head-main" style={{ color: "black", padding: 0,textDecoration:"none"  }}>
-                  <Typography textAlign="center">{setting}</Typography>
-                  </Link>
-                </MenuItem>
-              )))
+              ))
               }
             </Menu>
           </Box>
