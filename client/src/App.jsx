@@ -4,6 +4,7 @@ import Login from "./Body/Login/Login";
 import Signup from "./Body/Signup/Signup";
 import Ide from "./Body/Ide/Ide";
 import Main from "./Body/Main/main";
+import Assignment from "./Body/Assignment/Assignment"
 
 import "./App.css";
 function App() {
@@ -16,8 +17,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
-
-          <Route exact path="/assignments" element={<h1>Courses List</h1>} />
+          <Route exact path="/assignments" element={<Assignment/>} />
           <Route
             exact
             path="/assignments/:course_id"
