@@ -12,6 +12,7 @@ const getOutput = async (code, lang, input, question_id, btn_clicked) => {
   } else {
     url += `submit/${question_id}`;
   }
+  console.log(url);
   try {
     const res = await Axios({
       url: url,

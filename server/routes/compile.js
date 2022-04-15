@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/run", (req, res) => {
+  console.log(req.body);
   const program = {
     script: req.body.code,
     language: req.body.lang,

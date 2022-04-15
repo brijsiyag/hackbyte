@@ -31,7 +31,7 @@ require("./passportConfig")(passport);
 //-----------------------------------------End Of MiddleWares------------------------------------//
 //Database connect
 mongoose.connect(
-  "mongodb+srv://ayush:1234@cluster0.4cupz.mongodb.net/hackbyte?retryWrites=true&w=majority",
+  "mongodb://localhost:27017/hackbyte",
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err) => {
     if (err) {
@@ -46,6 +46,6 @@ mongoose.connect(
 app.use(auth);
 app.use(compile);
 //-----------------------------------------End Of Routes------------------------------------//
-app.listen("8000", () => {
+app.listen(8000, () => {
   console.log("server is running on port 8000.....");
 });
