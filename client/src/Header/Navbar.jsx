@@ -11,6 +11,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
+import Link from '@mui/material/Link';
+import "./navbar.css"
+
 
 const pages = ["Assignments", "Stress Testing", "Ide"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -38,6 +41,7 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+            <Link href="/" className="head-main" style={{ color: "white", padding: 0,  }}>
           <Typography
             variant="h4"
             noWrap
@@ -46,6 +50,7 @@ const ResponsiveAppBar = () => {
           >
             Hackbyte
           </Typography>
+              </Link>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton

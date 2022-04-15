@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./Header/Navbar";
 import Login from "./Body/Login/Login";
+import Signup from "./Body/Signup/Signup";
+
 
 import "./App.css";
 function App() {
@@ -26,7 +28,7 @@ function App() {
             element={<h1>Submit Code</h1>}
           />
           <Route path="/login" element={<Login/>} />
-          <Route path="/signup" element={<h1>Signup</h1>} />
+          <Route path="/signup" element={<Signup/>} />
           <Route exact path="*" element={<h1>Main</h1>} />
         </Routes>
       </BrowserRouter>
