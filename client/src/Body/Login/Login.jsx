@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import HomeIcon from "@mui/icons-material/Home";
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./login.css"
 
@@ -82,7 +82,7 @@ export default function SignIn() {
             <Grid container>
               
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

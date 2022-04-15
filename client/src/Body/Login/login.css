@@ -3,16 +3,30 @@ padding: 60px 40px;
 width: fit-content;
 display: block;
  margin: auto;   
- margin-top: 50px;
+ margin-top: 6%;
 border-radius: 25px;
 background: #ffffff;
 box-shadow: 5px 5px 13px #ededed,
 -5px -5px 13px #ffffff;
+}
+.signupContainer {
+    padding: 60px 40px;
+    width: fit-content;
+    display: block;
+    margin: auto;
+    margin-top: 6%;
+    border-radius: 25px;
+    background: #ffffff;
+    box-shadow: 5px 5px 13px #ededed,
+        -5px -5px 13px #ffffff;
 }
 .MuiBox-root{
     margin-top: 0px !important;
 }
 .css-164r41r{
     margin-top: 30px !important;
+}
+.css-178yklu{
+    margin-top: 35px !important;
 }
 
