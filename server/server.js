@@ -7,6 +7,8 @@ const passport = require("passport");
 const auth = require("./Routes/auth");
 const compile = require("./Routes/compile");
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 
 //Middlewares
 app.use(express.urlencoded({ extended: true }));
@@ -43,9 +45,9 @@ mongoose.connect(
 );
 //-----------------------------------------End Of Database------------------------------------//
 //Routes
-app.use("api/auth", auth);
-app.use("api", compile);
+app.use(compile);
+app.use(auth);
 //-----------------------------------------End Of Routes------------------------------------//
-app.listen(8000, () => {
+app.listen("8000", () => {
   console.log("server is running on port 8000.....");
 });
