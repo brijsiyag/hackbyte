@@ -36,7 +36,13 @@ export default function SignIn() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    alert(data.email);
+    const admin ={email :"ayush@gmail.com", password:"12345"}
+    if(data.email === admin.email && data.password === admin.password){
+      alert("Admin Login!");
+      navigate("/admin");
+
+    }
+    else{
     Axios.post(`${process.env.REACT_APP_SERVER_ADDRESS}/api/auth/login`, {
       email: data.email,
       password: data.password,
@@ -55,6 +61,7 @@ export default function SignIn() {
       .catch((err) => {
         console.log(err);
       });
+    }
   };
 
   return (

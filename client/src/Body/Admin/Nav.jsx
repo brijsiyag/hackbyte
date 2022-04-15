@@ -94,9 +94,9 @@ const ResponsiveAppBar = () => {
               {
               logins.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      
+                      <Link href={"/"} className="head-main" style={{ color: "black", padding: 0,textDecoration:"none"  }}>
                   <Typography textAlign="center">{setting}</Typography>
-                 
+                 </Link>
                 </MenuItem>
               ))
               }
