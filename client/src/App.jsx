@@ -5,6 +5,8 @@ import Signup from "./Body/Signup/Signup";
 import Ide from "./Body/Ide/Ide";
 import Main from "./Body/Main/main";
 import Assignment from "./Body/Assignment/Assignment"
+import Admin from "./Body/Admin/Admin"
+import QuestionAdd from "./Body/Admin/Question";
 
 import "./App.css";
 function App() {
@@ -13,17 +15,17 @@ function App() {
    
   return (
     <div className="App">
-      <Navbar />
+    
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Main />} />
-          <Route exact path="/assignments" element={<Assignment/>} />
+          <Route path="/" element={<><Navbar /><Main/></>} />
+          <Route exact path="/assignments" element={<><Navbar /><Assignment/></>} />
           <Route
             exact
             path="/assignments/:course_id"
             element={<h1>Course Assignments</h1>}
           />
-          <Route exact path="/ide" element={<Ide />} />
+          <Route exact path="/ide" element={<><Navbar /><Ide/></>} />
           <Route
             exact
             path="/assignments/:course_id/:assignment"
@@ -34,8 +36,12 @@ function App() {
             path="/assignments/:assignment/:question_id"
             element={<h1>Submit Code</h1>}
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<><Navbar /><Login /></>} />
+          <Route path="/signup" element={<><Navbar /><Signup /></>} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/questionadd" element={<QuestionAdd />} />
+
+
           <Route exact path="*" element={<h1>Main</h1>} />
         </Routes>
       </BrowserRouter>
