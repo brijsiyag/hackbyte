@@ -46,7 +46,7 @@ export default function SignIn() {
         if (res.data.success === true) {
           // props.setLoggedIn(true);
           navigate("/");
-        } else if (res.data.success === false && res.data.err == false) {
+        } else if (res.data.success === false && res.data.err === false) {
           alert(res.data.message);
           //   createNotification(res.data.err, "error", 3000);
         }
