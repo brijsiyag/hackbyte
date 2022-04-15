@@ -43,8 +43,8 @@ mongoose.connect(
 );
 //-----------------------------------------End Of Database------------------------------------//
 //Routes
-app.use(auth);
-app.use(compile);
+app.use("api/auth", auth);
+app.use("api", compile);
 //-----------------------------------------End Of Routes------------------------------------//
 app.listen(8000, () => {
   console.log("server is running on port 8000.....");
