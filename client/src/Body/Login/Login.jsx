@@ -18,6 +18,9 @@ import "./login.css"
 const theme = createTheme();
 
 export default function SignIn() {
+
+ document.title = "Login";
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
